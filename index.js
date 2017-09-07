@@ -2,6 +2,21 @@ var postcss = require('postcss');
 var precss = require('precss');
 var postcssScss = require('postcss-scss');
 
+function addDepends(file, messages) {
+  if (!file.cache) {
+    return;
+  }
+
+  var deps = [file.realpath];
+
+  messages.forEach(function(message) {
+    if (message.type === 'dependency' && ~deps.indexOf(message.parent)) {
+      deps.push(message.file);
+      file.cache.addDeps(message.file);
+    }
+  });
+}
+
 module.exports = function(content, file, conf, callback) {
   if (!callback) {
     throw new Error('Async plugin is not supported in `fis3`, please use `fis3-async`。');
@@ -21,6 +36,8 @@ module.exports = function(content, file, conf, callback) {
     .process(content, processConf)
     .then(function (ret) {
       content = ret.css;
+
+      addDepends(file, ret.messages);
       
       if (ret.map) {
         var mapping = fis.file.wrap(file.dirname + '/' + file.filename + file.rExt + '.map');
