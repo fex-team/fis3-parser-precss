@@ -2,6 +2,7 @@ var postcss = require('postcss');
 var precss = require('precss');
 var postcssScss = require('postcss-scss');
 var calc = require('postcss-calc');
+var prettify = require('postcss-prettify');
 
 function addDepends(file, messages) {
   if (!file.cache) {
@@ -25,8 +26,7 @@ module.exports = function(content, file, conf, callback) {
 
   var processConf = fis.util.assign({
     parser: postcssScss,
-    from: file.subpath.substring(1),
-    to: file.release
+    from: file.subpath.substring(1)
   }, conf.sourceMap ? {
     map: {
       inline: false
@@ -35,7 +35,8 @@ module.exports = function(content, file, conf, callback) {
 
   postcss([
     precss(conf),
-    calc()
+    calc(),
+    prettify()
   ])
     .process(content, processConf)
     .then(function (ret) {
