@@ -1,6 +1,7 @@
 var postcss = require('postcss');
 var precss = require('precss');
 var postcssScss = require('postcss-scss');
+var calc = require('postcss-calc');
 
 function addDepends(file, messages) {
   if (!file.cache) {
@@ -32,7 +33,10 @@ module.exports = function(content, file, conf, callback) {
     }
   } : null);
 
-  postcss([precss(conf)])
+  postcss([
+    precss(conf),
+    calc()
+  ])
     .process(content, processConf)
     .then(function (ret) {
       content = ret.css;
