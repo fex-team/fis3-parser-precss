@@ -3,6 +3,13 @@ var precss = require('precss');
 var postcssScss = require('postcss-scss');
 var calc = require('postcss-calc');
 var prettify = require('postcss-prettify');
+var functions = require('postcss-functions');
+var autoprefixer = require('autoprefixer');
+var color = require('color');
+
+function clamp(val) {
+    return Math.min(100, Math.max(0, val));
+}
 
 function addDepends(file, messages) {
   if (!file.cache) {
@@ -36,6 +43,35 @@ module.exports = function(content, file, conf, callback) {
   postcss([
     precss(conf),
     calc(),
+    functions({
+      functions: {
+          lighten: function (value, percentage) {
+              var hsl = color(value.trim()).hsl();
+              hsl.color[2] += parseFloat(percentage);
+              hsl.color[2] = clamp(hsl.color[2]);
+              return hsl.rgb().toString();
+          },
+          darken: function (value, percentage) {
+              var hsl = color(value.trim()).hsl();
+              hsl.color[2] -= parseFloat(percentage);
+              hsl.color[2] = clamp(hsl.color[2]);
+              return hsl.rgb().toString();
+          },
+          saturate: function (value, percentage) {
+              var hsl = color(value.trim()).hsl();
+              hsl.color[1] += parseFloat(percentage);
+              hsl.color[1] = clamp(hsl.color[1]);
+              return hsl.rgb().toString();
+          },
+          desaturate: function (value, percentage) {
+              var hsl = color(value.trim()).hsl();
+              hsl.color[1] -= parseFloat(percentage);
+              hsl.color[1] = clamp(hsl.color[1]);
+              return hsl.rgb().toString();
+          }
+      }
+    }),
+    autoprefixer,
     prettify()
   ])
     .process(content, processConf)
