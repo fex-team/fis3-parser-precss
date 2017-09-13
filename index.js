@@ -99,7 +99,7 @@ module.exports = function(content, file, conf, callback) {
         file.extras.derived.push(mapping);
       }
       callback(null, content);
-    })
+    }).catch(callback);
 }
 
 module.exports.defaultOptions = {
