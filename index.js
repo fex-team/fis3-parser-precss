@@ -92,15 +92,9 @@ module.exports = function(content, file, conf, callback) {
       
       if (ret.map) {
         var mapping = fis.file.wrap(file.dirname + '/' + file.filename + file.rExt + '.map');
-    
-        // 修改 source 文件名。
-        // var sourceMapObj = JSON.parse(ret.map.toString('utf8'));
-        // sourceMapObj.sources[0] = file.subpath;
-        // mapping.setContent(JSON.stringify(sourceMapObj, null, 4));
-        mapping.setContent(ret.map);
+        mapping.setContent(ret.map.toString('utf8'));
         
         var url = mapping.getUrl(fis.compile.settings.hash, fis.compile.settings.domain);
-    
         content = ret.css.replace(/\n?\s*\/\*#\ssourceMappingURL=.*?(?:\n|$)/g, '');
         content += '\n/*# sourceMappingURL=' +  url + '*/\n';
     
