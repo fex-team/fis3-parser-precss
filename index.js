@@ -33,7 +33,7 @@ module.exports = function(content, file, conf, callback) {
 
   // 不处理空文件和代码片段
   if (!content || !content.trim() || file.basename[ 0 ] === '_') {
-    return content;
+    return callback(null, content);
   }
 
   var processConf = fis.util.assign({
