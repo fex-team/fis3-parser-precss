@@ -1,6 +1,6 @@
 {
   "name": "fis3-parser-precss",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "parse precss for fis3",
   "main": "index.js",
   "scripts": {
