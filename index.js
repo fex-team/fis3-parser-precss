@@ -31,6 +31,11 @@ module.exports = function(content, file, conf, callback) {
     throw new Error('Async plugin is not supported in `fis3`, please use `fis3-async`。');
   }
 
+  // 不处理空文件和代码片段
+  if (!content || !content.trim() || file.basename[ 0 ] === '_') {
+    return content;
+  }
+
   var processConf = fis.util.assign({
     parser: postcssScss,
     from: file.subpath.substring(1)
