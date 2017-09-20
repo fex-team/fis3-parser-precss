@@ -105,6 +105,8 @@ module.exports = function(content, file, conf, callback) {
 module.exports.defaultOptions = {
   sourceMap: false,
   'import': {
-    extension: '.pcss'
+    extension: '.pcss',
+    root: fis.project.getProjectPath(),
+    prefix: '_'
   }
 };
