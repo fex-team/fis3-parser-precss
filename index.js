@@ -51,7 +51,7 @@ module.exports = function(content, file, conf, callback) {
   if (typeof path === 'string') {
     path = [path];
   }
-  path.unshift(fis.project.getProjectPath());
+  path.push(fis.project.getProjectPath());
   path.unshift(file.dirname);
   conf.import.path = path;
 
