@@ -51,7 +51,8 @@ module.exports = function(content, file, conf, callback) {
   if (typeof path === 'string') {
     path = [path];
   }
-  path.push(file.dirname);
+  path.unshift(fis.project.getProjectPath());
+  path.unshift(file.dirname);
   conf.import.path = path;
 
   postcss([
