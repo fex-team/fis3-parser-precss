@@ -85,6 +85,7 @@ module.exports = function(content, file, conf, callback) {
     prettify()
   ])
     .process(content, processConf)
+    .catch(callback)
     .then(function (ret) {
       content = ret.css;
 
@@ -103,7 +104,7 @@ module.exports = function(content, file, conf, callback) {
         file.extras.derived.push(mapping);
       }
       callback(null, content);
-    }).catch(callback);
+    });
 }
 
 module.exports.defaultOptions = {
