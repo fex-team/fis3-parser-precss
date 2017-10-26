@@ -46,9 +46,13 @@ module.exports = function(content, file, conf, callback) {
   } : null);
 
   conf.import = conf.import || {};
-  conf.import.path = [
-    file.dirname
-  ];
+
+  var path = conf.import.path || [];
+  if (typeof path === 'string') {
+    path = [path];
+  }
+  path.push(file.dirname);
+  conf.import.path = path;
 
   postcss([
     precss(conf),
